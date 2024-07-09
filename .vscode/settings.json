@@ -9,6 +9,7 @@
         "legal.h": "c",
         "entropy.h": "c",
         "sha256.h": "c",
-        "private_access.h": "c"
+        "private_access.h": "c",
+        "rascunho": "c"
     },
 }
