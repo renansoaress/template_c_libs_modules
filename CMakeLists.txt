@@ -90,3 +90,14 @@ set(ENABLE_PROGRAMS OFF CACHE BOOL "Disable example programs" FORCE)
 
 # Adicionando o subdiretório do mbedTLS
 add_subdirectory(${THIRD_PARTY_DIR}/mbedtls)
+
+# Adicionando raylib (libraylib.a) ao projeto
+add_library(raylib STATIC IMPORTED)
+set_target_properties(raylib PROPERTIES
+    IMPORTED_LOCATION ${THIRD_PARTY_DIR}/raylib/lib/libraylib.a
+    INTERFACE_INCLUDE_DIRECTORIES ${THIRD_PARTY_DIR}/raylib/include
+)
+
+# Linkar raylib ao executável principal e adicionar dependências do sistema
+target_link_libraries(main PRIVATE raylib)
+target_link_libraries(main PRIVATE opengl32 gdi32 winmm)

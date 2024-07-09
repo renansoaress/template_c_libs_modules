@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include "raylib.h"
 #include "test.h"
 #include "lib/mylib/mylib.h"
 #include "lib/mylib2/mylib2.h"
@@ -7,6 +8,14 @@
 #include "modules/oi/m_oi.h"
 
 #include "mbedtls/sha256.h"
+
+void ascii_to_hex(const unsigned char *ascii_array, int ascii_length, char *hex_array)
+{
+    for (int i = 0, j = 0; i < ascii_length; ++i, j += 2)
+    {
+        sprintf(hex_array + j, "%02X", ascii_array[i]);
+    }
+}
 
 void print_hash(unsigned char hash[32])
 {
@@ -49,6 +58,21 @@ int main()
     // Imprime o hash
     printf("SHA-256 hash: ");
     print_hash(hash);
+
+    InitWindow(800, 450, "raylib [core] example - basic window");
+
+    char hashHex[65] = {0};
+    ascii_to_hex(hash, sizeof(hash), hashHex);
+
+    while (!WindowShouldClose())
+    {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+        DrawText(hashHex, 0, 200, 20, LIGHTGRAY);
+        EndDrawing();
+    }
+
+    CloseWindow();
 
     return 0;
 }

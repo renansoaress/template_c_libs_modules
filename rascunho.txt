@@ -1,3 +1,5 @@
+// build mbedtls windows = make CC=gcc WINDOWS=1 no_test
+
 Escrever o código da biblioteca:
 Escreva o código fonte da sua biblioteca em um ou mais arquivos .c e .h. Por exemplo, vamos criar uma biblioteca matemática simples chamada mylib.
 
