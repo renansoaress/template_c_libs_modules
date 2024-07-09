@@ -28,6 +28,7 @@ add_custom_target(build_libs
     COMMAND ${CMAKE_COMMAND} -E remove_directory ${INCLUDE_DIR}/lib
     COMMAND ${CMAKE_COMMAND} -E make_directory ${INCLUDE_DIR}/lib
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${LIBS_DIR} ${INCLUDE_DIR}/lib
+    COMMAND find ${INCLUDE_DIR}/lib -type f -not -name "*.h" -delete
     COMMENT "Buildando somente as bibliotecas"
 )
 
