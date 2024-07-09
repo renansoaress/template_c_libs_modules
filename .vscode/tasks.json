@@ -2,9 +2,9 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Compilar",
+            "label": "START",
             "type": "shell",
-            "command": "mkdir -p build && cd build && cmake .. && make",
+            "command": "cmake -S . -B build/ -G 'Unix Makefiles'",
             "args": [],
             "group": {
                 "kind": "build",
@@ -13,12 +13,26 @@
             "problemMatcher": [
                 "$gcc"
             ],
-            "detail": "Compila o projeto usando o CMakefile."
+            "detail": "Start do projeto"
+        },
+        {
+            "label": "Compilar",
+            "type": "shell",
+            "command": "cmake --build build",
+            "args": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "detail": "Compila o projeto usando o CMake."
         },
         {
             "label": "Compilar Libs",
             "type": "shell",
-            "command": "cd build && make build_libs",
+            "command": "cmake --build build --target build_libs",
             "args": [],
             "group": {
                 "kind": "build",
@@ -27,7 +41,7 @@
             "problemMatcher": [
                 "$gcc"
             ],
-            "detail": "Compila o projeto usando o CMakefile."
+            "detail": "Compila apenas as bibliotecas usando o CMake."
         },
         {
             "label": "Compilar e Executar",
@@ -60,5 +74,5 @@
                 "panel": "shared"
             }
         }
-    ],
+    ]
 }

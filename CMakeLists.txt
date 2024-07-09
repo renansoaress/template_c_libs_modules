@@ -27,8 +27,8 @@ add_custom_target(build_libs
     COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --cyan "Copiando headers das libs para include/lib"
     COMMAND ${CMAKE_COMMAND} -E remove_directory ${INCLUDE_DIR}/lib
     COMMAND ${CMAKE_COMMAND} -E make_directory ${INCLUDE_DIR}/lib
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${LIBS_DIR} ${INCLUDE_DIR}/lib
-    COMMAND find ${INCLUDE_DIR}/lib -type f -not -name "*.h" -delete
+    # COMMAND ${CMAKE_COMMAND} -E copy_directory ${LIBS_DIR} ${INCLUDE_DIR}/lib
+    # COMMAND find ${INCLUDE_DIR}/lib -type f -not -name "*.h" -delete
     COMMENT "Buildando somente as bibliotecas"
 )
 
@@ -50,7 +50,9 @@ function(add_dynamic_libs_with_dependencies LIB_DIR)
         file(GLOB LIB_SOURCES ${LIBS_DIR}/${LIB_NAME}/*.c)
         add_library(${LIB_NAME} SHARED ${LIB_SOURCES})
         set_target_properties(${LIB_NAME} PROPERTIES
-            LIBRARY_OUTPUT_DIRECTORY ${BIN_DIR}/lib
+            LIBRARY_OUTPUT_DIRECTORY ${BIN_DIR}
+            RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR}
+            ARCHIVE_OUTPUT_DIRECTORY ${BIN_DIR}
         )
         # Adiciona as libs como dependências do build_libs
         add_dependencies(build_libs ${LIB_NAME})
