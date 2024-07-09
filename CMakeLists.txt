@@ -62,6 +62,11 @@ endfunction()
 # Configurar a construção das libs dinâmicas
 add_dynamic_libs_with_dependencies(${LIBS_DIR})
 
+# Configurando a build para colocar o executável final em bin/
+set_target_properties(main PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR}
+)
+
 # Adicionando mbedTLS (apenas SHA-256, MD5 e AES)
 add_library(mbedtls_sha256 STATIC ${THIRD_PARTY_DIR}/mbedtls/library/sha256.c)
 add_library(mbedtls_md5 STATIC ${THIRD_PARTY_DIR}/mbedtls/library/md5.c)
@@ -75,11 +80,6 @@ target_include_directories(mbedtls_platform_util PUBLIC ${THIRD_PARTY_DIR}/mbedt
 
 # Linkar as bibliotecas ao executável principal
 target_link_libraries(main PRIVATE mbedtls_sha256 mbedtls_md5 mbedtls_aes mbedtls_platform_util)
-
-# Configurando a build para colocar o executável final em bin/
-set_target_properties(main PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR}
-)
 
 # Desativando testes e programas exemplo da mbedTLS
 set(ENABLE_TESTING OFF CACHE BOOL "Disable testing" FORCE)
