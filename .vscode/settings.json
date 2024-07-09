@@ -6,6 +6,9 @@
         "mylib.h": "c",
         "mylib2.h": "c",
         "m_oi.h": "c",
-        "legal.h": "c"
+        "legal.h": "c",
+        "entropy.h": "c",
+        "sha256.h": "c",
+        "private_access.h": "c"
     },
 }

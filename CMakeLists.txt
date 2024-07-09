@@ -7,6 +7,7 @@ set(LIB_DIR ${CMAKE_SOURCE_DIR}/lib)
 set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
 set(LIBS_DIR ${CMAKE_SOURCE_DIR}/libs)
 set(BIN_DIR ${CMAKE_SOURCE_DIR}/bin)
+set(THIRD_PARTY_DIR ${CMAKE_SOURCE_DIR}/3rdparty)
 
 # Função para copiar headers das libs para include/lib
 function(copy_lib_headers LIB_DIR)
@@ -37,11 +38,9 @@ function(add_sources_to_target TARGET DIRECTORY)
 endfunction()
 
 # Configurando a build do executável principal
-# add_executable(main ${SRC_DIR}/main.c ${SRC_DIR}/test.c)
 add_executable(main)
 add_sources_to_target(main ${SRC_DIR})
 target_include_directories(main PUBLIC ${INCLUDE_DIR})
-# target_link_libraries(main PRIVATE mylib mylib2 legal)
 
 # Função para adicionar libs dinâmicas de um diretório e configurar dependências
 function(add_dynamic_libs_with_dependencies LIB_DIR)
@@ -63,7 +62,28 @@ endfunction()
 # Configurar a construção das libs dinâmicas
 add_dynamic_libs_with_dependencies(${LIBS_DIR})
 
+# Adicionando mbedTLS (apenas SHA-256, MD5 e AES)
+add_library(mbedtls_sha256 STATIC ${THIRD_PARTY_DIR}/mbedtls/library/sha256.c)
+add_library(mbedtls_md5 STATIC ${THIRD_PARTY_DIR}/mbedtls/library/md5.c)
+add_library(mbedtls_aes STATIC ${THIRD_PARTY_DIR}/mbedtls/library/aes.c)
+add_library(mbedtls_platform_util STATIC ${THIRD_PARTY_DIR}/mbedtls/library/platform_util.c)
+
+target_include_directories(mbedtls_sha256 PUBLIC ${THIRD_PARTY_DIR}/mbedtls/include)
+target_include_directories(mbedtls_md5 PUBLIC ${THIRD_PARTY_DIR}/mbedtls/include)
+target_include_directories(mbedtls_aes PUBLIC ${THIRD_PARTY_DIR}/mbedtls/include)
+target_include_directories(mbedtls_platform_util PUBLIC ${THIRD_PARTY_DIR}/mbedtls/include)
+
+# Linkar as bibliotecas ao executável principal
+target_link_libraries(main PRIVATE mbedtls_sha256 mbedtls_md5 mbedtls_aes mbedtls_platform_util)
+
 # Configurando a build para colocar o executável final em bin/
 set_target_properties(main PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR}
 )
+
+# Desativando testes e programas exemplo da mbedTLS
+set(ENABLE_TESTING OFF CACHE BOOL "Disable testing" FORCE)
+set(ENABLE_PROGRAMS OFF CACHE BOOL "Disable example programs" FORCE)
+
+# Adicionando o subdiretório do mbedTLS
+add_subdirectory(${THIRD_PARTY_DIR}/mbedtls)

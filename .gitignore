@@ -1,3 +1,5 @@
 build
 bin
 include/lib
+3rdparty/mbedtls/*
+!3rdparty/mbedtls/
