@@ -1,0 +1,73 @@
+Escrever o código da biblioteca:
+Escreva o código fonte da sua biblioteca em um ou mais arquivos .c e .h. Por exemplo, vamos criar uma biblioteca matemática simples chamada mylib.
+
+////////////////////////////////////////////////////////////////////////////////
+Arquivo mylib.h:
+
+#ifndef MYLIB_H
+#define MYLIB_H
+
+int add(int a, int b);
+int subtract(int a, int b);
+
+#endif
+
+////////////////////////////////////////////////////////////////////////////////
+Arquivo mylib.c:
+
+#include "mylib.h"
+
+int add(int a, int b) {
+    return a + b;
+}
+
+int subtract(int a, int b) {
+    return a - b;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+Compilar a biblioteca:
+Use um compilador como o gcc para compilar a biblioteca. Você pode criar uma biblioteca estática (.a) ou uma biblioteca dinâmica (.so).
+
+////////////////////////////////////////////////////////////////////////////////
+Para criar uma biblioteca estática:
+gcc -c mylib.c -o mylib.o
+ar rcs libmylib.a mylib.o
+
+////////////////////////////////////////////////////////////////////////////////
+Para criar uma biblioteca dinâmica:
+gcc -c -fPIC mylib.c -o mylib.o
+gcc -shared -o libmylib.so mylib.o
+
+////////////////////////////////////////////////////////////////////////////////
+Usar a biblioteca em um programa:
+Escreva um programa que use a sua biblioteca.
+
+////////////////////////////////////////////////////////////////////////////////
+Arquivo main.c:
+#include <stdio.h>
+#include "mylib.h"
+
+int main() {
+    int a = 5, b = 3;
+    printf("Add: %d\n", add(a, b));
+    printf("Subtract: %d\n", subtract(a, b));
+    return 0;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+Compilar o programa com a biblioteca:
+
+Para usar a biblioteca estática:
+gcc main.c -L. -lmylib -o main
+
+////////////////////////////////////////////////////////////////////////////////
+Para usar a biblioteca dinâmica:
+
+gcc main.c -L. -lmylib -o main
+export LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH
+A linha export LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH adiciona o diretório atual ao caminho de pesquisa de bibliotecas dinâmicas, permitindo que o sistema encontre libmylib.so.
+
+////////////////////////////////////////////////////////////////////////////////
+Executar o programa:
+./main
